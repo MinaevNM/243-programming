@@ -28,7 +28,7 @@ void main()
 	int n, m;
 	int ** a;
 
-	freopen("input5.txt", "rt", stdin);
+	freopen("input.txt", "rt", stdin);
 	freopen("output.txt", "wt", stdout);
 
 	cin >> n >> m;
