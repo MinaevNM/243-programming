@@ -5,7 +5,7 @@ using namespace std;
 
 void main()
 {
-	KuhnGraph kg("input4.txt");
+	KuhnGraph kg("input.txt");
 
 	list<pair<int, int>> l = kg.Kuhn();
 	
