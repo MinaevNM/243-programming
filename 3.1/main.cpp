@@ -41,10 +41,6 @@ complex<double> * FFT( complex<double> * polynom, int degree )
 	val1 = FFT(pol1, degree / 2); 
 	val2 = FFT(pol2, degree / 2); 
 
-	/*
-	for (int i = 0; i < degree; i++) 
-		values[i] = val1[i % (degree / 2)] + roots[i] * val2[i % (degree / 2)]; */
-
 	for (int i = 0; i < degree / 2; i++)
 	{
 		values[i] = val1[i] + roots[i] * val2[i];
@@ -134,37 +130,15 @@ char * FastMultiply( char * str1, char * str2, int degree )
 	val1 = FFT(pol1, 2 * degree); 
 	val2 = FFT(pol2, 2 * degree); 
 	
-	cout << "pol1 = ";
-	for (int i = 0; i < 2 * degree; i++)
-		cout << (int)real(pol1[i]);
-	cout << endl;
-
-	cout << "pol2 = ";
-	for (int i = 0; i < 2 * degree; i++)
-		cout << (int)real(pol2[i]);
-	cout << endl;
-	/*
-	cout << "val1            val2" << endl;
-
-	for (int i = 0; i < 2 * degree; i++)
-		cout << val1[i] << "            " << val2[i] << endl;
-	exit(0);
-	*/
 	for (int i = 0; i < 2 * degree; i++) 
 		val3[i] = val1[i] * val2[i];
 	
 	pol3 = IFFT(val3, 2 * degree); 
 	
-	cout << "pol3 = ";
-	for (int i = 0; i < 2 * degree; i++)
-		cout << (int)(real(pol3[i]) + 0.5);
-	cout << endl;
-	exit(0);
-	
 	char * str3 = new char[2 * degree - 1]; 
 	 
 	for (int i = 0; i < 2 * degree - 1; i++) 
-		str3[i] = (char)real(pol3[i + 1]); 
+		str3[i] = (char)(real(pol3[i + 1]) + 0.5); 
 
 	delete [] pol1; 
 	delete [] pol2; 
@@ -198,6 +172,7 @@ void addShiftsForChar( char c, char * str1n, char * str2n, int n, int * shift )
 		swap(str2[i], str2[n - i - 1]); 
 
 	char * str3 = new char[2 * n - 1]; 
+
 	/* 
 	memset(str3, 0, (2 * n - 1) * sizeof(char)); 
 	 
@@ -206,22 +181,9 @@ void addShiftsForChar( char c, char * str1n, char * str2n, int n, int * shift )
 			for (int j = 0; j < n; j++) 
 				str3[2 * n - 2 - (i + j)] += str1[n - j - 1]; 
 	*/ 
-	/*
-	for (int i = 0; i < n; i++)
-		cout << (int)str1[i];
-	cout << endl;
 
-	for (int i = 0; i < n; i++)
-		cout << (int)str2[i];
-	cout << endl;
-	*/
 	str3 = FastMultiply(str1, str2, n); 
-	/*
-	for (int i = 0; i < 2 * n - 1; i++)
-		cout << (int)str3[i];
-	cout << endl;
-	exit(0);
-	*/
+
 	shift[0] += (int)str3[n - 1]; 
 	 
 	for (int i = 0; i < n - 1; i++) 
@@ -264,9 +226,10 @@ void main()
 		if (shift[i] > shift[max]) 
 			max =  i; 
 
-	cout << shift[max] << ' ' << max << endl; 
+	cout << shift[max] << ' ' << ((max + 1) % n) << endl; 
 
 	delete [] shift; 
 	delete [] str1n; 
 	delete [] str2n; 
 } 
+
