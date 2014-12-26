@@ -9,7 +9,7 @@ void main()
  	int state = 0; 
 	int cstate = 0;
 	freopen("input.cpp", "rt", stdin); 
-	//freopen("output.txt", "wt", stdout); 
+	freopen("output.txt", "wt", stdout); 
 
 	string s = ""; 
 	int line = 1;
