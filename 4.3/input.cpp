@@ -1,0 +1,9 @@
+(a|b)*c|(pq)
+7
+ac
+acpq
+abpq
+c
+aaaaa
+ababaaabbbbaaac
+apq
