@@ -25,7 +25,7 @@ void main()
 	for (int i = 0; i < n; i++)
 	{
 		cin >> s;
-		cout << (fsm->check_string(s) ? "YES" : "NO") << endl;
+		cout << (fsm->check_string(s) ? "Yes" : "No") << endl;
 	}
 
 	delete fsm;
