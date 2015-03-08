@@ -4,21 +4,32 @@
 
 FS_Machine::FS_Machine( string regexp )
 {
-	num_of_states = 11;
+	num_of_states = 4;
 
-	matrix = new char * [num_of_states];
+	matrix = new set<char> * [num_of_states];
 	for (int i = 0; i < num_of_states; i++)
-		matrix[i] = new char[num_of_states];
+		matrix[i] = new set<char>[num_of_states];
+	
+	matrix[0][1].insert('a');
+	matrix[0][1].insert('b');
+	matrix[0][2].insert('p');
+	matrix[0][3].insert('c');
+	matrix[1][1].insert('a');
+	matrix[1][1].insert('b');
+	matrix[1][3].insert('c');
+	matrix[2][3].insert('q');
+	//eps_closure();
+}
 
-	FILE * f = fopen("matrix.txt", "rt");
+void FS_Machine::eps_closure()
+{
+	/*
 	for (int i = 0; i < num_of_states; i++)
-	{
 		for (int j = 0; j < num_of_states; j++)
-			fscanf(f, "%c", &matrix[i][j]);
-		fscanf(f, "\n");
-	}
-
-	fclose(f);
+			for (int k = 0; k < num_of_states; k++)
+				if (matrix[i][j] == '@' && matrix[j][k] == '@')
+					matrix[i][k] = '@';
+					*/
 }
 
 bool FS_Machine::check_string( string s )
@@ -43,24 +54,11 @@ bool FS_Machine::check_string( string s )
 
 		for (int i = 0; i < num_of_states; i++)
 		{
-			if (matrix[state][i] == c)
+			if (matrix[state][i].find(c) != matrix[state][i].end())
 			{
 				state = i;
 				next_state_found = true;
 				break;
-			}
-			if (matrix[state][i] == '@')
-			{
-				for (int j = 0; j < num_of_states; j++)
-					if (matrix[i][j] == c)
-					{
-						state = j;
-						next_state_found = true;
-						break;
-					}
-
-				if (next_state_found)
-					break;
 			}
 		}
 
