@@ -1,4 +1,5 @@
 #include <iostream>
+#include <set>
 
 using namespace std;
 
@@ -7,9 +8,10 @@ using namespace std;
 class FS_Machine
 {
 	int num_of_states;
-	char ** matrix;
+	set<char> ** matrix;
 
 public:
 	FS_Machine( string regexp );
 	bool check_string( string s );
+	void eps_closure();
 };
