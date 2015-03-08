@@ -1,7 +1,5 @@
 (a|b)*c|(pq)
-7
-ac
-acpq
+5
 abpq
 c
 aaaaa
