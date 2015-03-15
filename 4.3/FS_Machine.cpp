@@ -2,6 +2,87 @@
 
 #pragma warning(disable: 4996)
 
+FS_Machine::FS_Machine()
+{
+}
+
+FS_Machine::FS_Machine( char c ) : num_of_states(2)
+{
+	matrix = new set<char> * [num_of_states];
+	for (int i = 0; i < num_of_states; i++)
+		matrix[i] = new set<char>[num_of_states];
+	matrix[0][1].insert(c);
+}
+
+FS_Machine FS_Machine::Operation( FS_Machine fsm1, FS_Machine fsm2, char op )
+{
+	FS_Machine f;
+
+	if (op == '&')
+	{
+		f.num_of_states = fsm1.num_of_states + fsm2.num_of_states;
+
+		f.matrix = new set<char> * [f.num_of_states];
+		for (int i = 0; i < f.num_of_states; i++)
+			f.matrix[i] = new set<char>[f.num_of_states];
+
+		for (int i = 0; i < fsm1.num_of_states; i++)
+			for (int j = 0; j < fsm1.num_of_states; j++)
+				f.matrix[i][j] = fsm1.matrix[i][j];
+
+		for (int i = 0; i < fsm2.num_of_states; i++)
+			for (int j = 0; j < fsm2.num_of_states; j++)
+				f.matrix[fsm1.num_of_states + i][fsm1.num_of_states + j] = fsm2.matrix[i][j];
+
+		f.matrix[fsm1.num_of_states - 1][fsm1.num_of_states].insert('@');
+	}
+	else if (op == '|')
+	{
+		f.num_of_states = fsm1.num_of_states + fsm2.num_of_states + 2;
+
+		f.matrix = new set<char> * [f.num_of_states];
+		for (int i = 0; i < f.num_of_states; i++)
+			f.matrix[i] = new set<char>[f.num_of_states];
+
+		for (int i = 0; i < fsm1.num_of_states; i++)
+			for (int j = 0; j < fsm1.num_of_states; j++)
+				f.matrix[i + 1][j + 1] = fsm1.matrix[i][j];
+
+		for (int i = 0; i < fsm2.num_of_states; i++)
+			for (int j = 0; j < fsm2.num_of_states; j++)
+				f.matrix[fsm1.num_of_states + i + 1][fsm1.num_of_states + j + 1] = fsm2.matrix[i][j];
+
+		f.matrix[0][1].insert('@');
+		f.matrix[0][fsm1.num_of_states + 1].insert('@');
+		f.matrix[fsm1.num_of_states][f.num_of_states - 1].insert('@');
+		f.matrix[f.num_of_states - 2][f.num_of_states - 1].insert('@');
+	}
+
+	return f;
+}
+
+FS_Machine FS_Machine::Kleene( FS_Machine fsm )
+{
+	FS_Machine f;
+
+	f.num_of_states = fsm.num_of_states + 2;
+
+	f.matrix = new set<char> * [f.num_of_states];
+	for (int i = 0; i < f.num_of_states; i++)
+		f.matrix[i] = new set<char>[f.num_of_states];
+
+	for (int i = 0; i < fsm.num_of_states; i++)
+		for (int j = 0; j < fsm.num_of_states; j++)
+			f.matrix[i + 1][j + 1] = fsm.matrix[i][j];
+
+	f.matrix[0][1].insert('@');
+	f.matrix[f.num_of_states - 2][f.num_of_states - 1].insert('@');
+	f.matrix[0][f.num_of_states - 1].insert('@');
+	f.matrix[f.num_of_states - 1][0].insert('@');
+
+	return f;
+}
+
 FS_Machine::FS_Machine( string regexp )
 {
 	num_of_states = 4;
