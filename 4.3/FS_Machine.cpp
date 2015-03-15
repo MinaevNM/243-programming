@@ -9,7 +9,7 @@ FS_Machine::FS_Machine( string regexp )
 	matrix = new set<char> * [num_of_states];
 	for (int i = 0; i < num_of_states; i++)
 		matrix[i] = new set<char>[num_of_states];
-	
+	/*
 	matrix[0][1].insert('a');
 	matrix[0][1].insert('b');
 	matrix[0][2].insert('p');
@@ -17,7 +17,14 @@ FS_Machine::FS_Machine( string regexp )
 	matrix[1][1].insert('a');
 	matrix[1][1].insert('b');
 	matrix[1][3].insert('c');
-	matrix[2][3].insert('q');
+	matrix[2][3].insert('q'); 
+	*/
+
+	matrix[0][1].insert('a');
+	matrix[1][3].insert('@');
+	matrix[1][2].insert('b');
+	matrix[2][3].insert('b');
+	matrix[3][3].insert('x');
 	//eps_closure();
 }
 
@@ -43,10 +50,14 @@ bool FS_Machine::check_string( string s )
 
 	while (true)
 	{
-		if (cur == length && state == num_of_states - 1)
+		if (cur == length)
 		{
 			delete [] seq;
-			return true;
+			if (state == num_of_states - 1)
+				return true;
+			if (matrix[state][num_of_states - 1].find('@') != matrix[state][num_of_states - 1].end())
+				return true;
+			return false;				
 		}
 
 		char c = seq[cur++];
@@ -64,8 +75,25 @@ bool FS_Machine::check_string( string s )
 
 		if (!next_state_found)
 		{
-			delete [] seq;
-			return false;
+			for (int i = 0; i < num_of_states; i++)
+			{
+				for (int j = 0; j < num_of_states; j++)
+					if (matrix[state][i].find('@') != matrix[state][i].end() && matrix[i][j].find(c) != matrix[i][j].end())
+					{
+						state = j;
+						next_state_found = true;
+						break;
+					}
+
+				if (next_state_found)
+					break;
+			}
+
+			if (!next_state_found)
+			{
+				delete [] seq;
+				return false;
+			}
 		}
 	}
 
