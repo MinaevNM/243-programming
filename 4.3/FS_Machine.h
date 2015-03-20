@@ -11,22 +11,6 @@ class FS_Machine
 	set<char> ** matrix;
 
 public:
-	void print()
-	{
-		for (int i = 0; i < num_of_states; i++)
-		{
-			for (int j = 0; j < num_of_states; j++)
-			{
-				if (matrix[i][j].size() == 0)
-					cout << 0;
-				for (set<char>::iterator it = matrix[i][j].begin(); it != matrix[i][j].end(); it++)
-						cout << *it;
-				cout << ' ';
-			}
-			cout << endl;
-		}
-	}
-
 	FS_Machine();
 	FS_Machine( string regexp );
 	FS_Machine( char c );
@@ -36,4 +20,7 @@ public:
 
 	bool check_string( string s );
 	void eps_closure();
+
+	void print_matrix();
+	void print_list();
 };
