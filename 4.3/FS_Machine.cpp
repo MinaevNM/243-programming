@@ -182,3 +182,32 @@ bool FS_Machine::check_string( string s )
 
 	return false;
 }
+
+void FS_Machine::print_matrix()
+{
+	for (int i = 0; i < num_of_states; i++)
+	{
+		for (int j = 0; j < num_of_states; j++)
+		{
+			if (matrix[i][j].size() == 0)
+				cout << 0;
+			for (set<char>::iterator it = matrix[i][j].begin(); it != matrix[i][j].end(); it++)
+					cout << *it;
+			cout << ' ';
+		}
+		cout << endl;
+	}
+}
+
+void FS_Machine::print_list()
+{
+	for (int i = 0; i < num_of_states; i++)
+		for (int j = 0; j < num_of_states; j++)
+			if (matrix[i][j].size())
+			{
+				cout << "(" << i << ", " << j << ", ";
+				for (set<char>::iterator it = matrix[i][j].begin(); it != matrix[i][j].end(); it++)
+					cout << *it;
+				cout << ")" << endl;
+			}
+}
